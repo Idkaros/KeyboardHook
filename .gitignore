@@ -332,3 +332,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 *.ard
+
+*.exe
+*.pdb
