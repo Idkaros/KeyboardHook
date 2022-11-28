@@ -335,3 +335,4 @@ healthchecksdb
 
 *.exe
 *.pdb
+*.b1s
