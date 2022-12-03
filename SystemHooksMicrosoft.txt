@@ -1,0 +1,4 @@
+Alcances por versiones:
+v1.0.0	Para está versión el nombre del archivo tendrá el formato pk_yyMMdd.pkf.
+		Los caracteres "supr" y "del" se agregaran al mensaje.
+v2.0.0
